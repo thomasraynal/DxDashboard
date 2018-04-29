@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dx.Dashboard.Core
+namespace Dx.Dashboard.Common
 {
     public interface IViewModel : IDisposable
     {

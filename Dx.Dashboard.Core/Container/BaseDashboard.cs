@@ -8,6 +8,7 @@ using DevExpress.Xpf.Bars;
 using System.Windows.Media;
 using Dx.Dashboard.Core;
 using StructureMap.Pipeline;
+using Dx.Dashboard.Common;
 using Dx.Dashboard.Cache;
 
 namespace Dx.Dashboard.Core
@@ -189,7 +190,10 @@ namespace Dx.Dashboard.Core
                 return;
             }
 
-            var workspace = AppContainer.ObjectProvider.GetInstance<IWorkspace<TState>>(new NamedArgument("loadLayout", loadLayout));
+            var arg = new ExplicitArguments();
+            arg.SetArg("loadLayout", loadLayout);
+
+            var workspace = AppContainer.ObjectProvider.GetInstance<IWorkspace<TState>>(arg);
 
             await workspace.Initialize(state);
 

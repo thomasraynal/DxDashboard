@@ -7,8 +7,9 @@ using System.Windows.Controls;
 using DevExpress.Xpf.Docking;
 using System.Windows;
 using ReactiveUI;
-using Dx.Dashboard.Core.Configuration;
 using Dx.Dashboard.Core;
+using Dx.Dashboard.Common;
+using Dx.Dashboard.Common.Configuration;
 
 namespace Dx.Dashboard.Core
 {

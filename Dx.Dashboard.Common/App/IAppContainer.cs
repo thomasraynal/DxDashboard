@@ -1,7 +1,7 @@
 ﻿using StructureMap;
 using System.Collections.Generic;
 
-namespace Dx.Dashboard.Core
+namespace Dx.Dashboard.Common
 {
     public interface IAppContainer
     {

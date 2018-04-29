@@ -109,15 +109,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\AppContainer.cs" />
-    <Compile Include="App\AppCore.cs" />
-    <Compile Include="App\AppCoreRegistry.cs" />
-    <Compile Include="App\IAppContainer.cs" />
-    <Compile Include="IPropertyCache.cs" />
-    <Compile Include="PropertyCacheBase.cs" />
     <Compile Include="IClientLogger.cs" />
-    <Compile Include="Configuration\DashboardConfigurationBase.cs" />
-    <Compile Include="Configuration\IDashboardConfiguration.cs" />
     <Compile Include="Container\IDashboard.cs" />
     <Compile Include="DevExpressHelper.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
@@ -125,7 +117,6 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UserControlExtension.cs" />
     <Compile Include="IExceptionHandler.cs" />
-    <Compile Include="ISchedulerProvider.cs" />
     <Compile Include="Menu\CheckButtonDescriptor.cs" />
     <Compile Include="Menu\SeparatorItemDescriptor.cs" />
     <Compile Include="Menu\WidgetButtonItemDescriptor.cs" />
@@ -174,8 +165,6 @@
     <Compile Include="Workspace\WorkspaceState.cs" />
     <Compile Include="Wpf\Commands.cs" />
     <Compile Include="Wpf\Converters.cs" />
-    <Compile Include="Wpf\IViewModel.cs" />
-    <Compile Include="Wpf\ViewModelBase.cs" />
     <Compile Include="XElementExtension.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +184,15 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Dx.Dashboard.Cache\Dx.Dashboard.Cache.csproj">
+      <Project>{bc709e2d-792d-4506-8ef1-30c8d05c33fd}</Project>
+      <Name>Dx.Dashboard.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dx.Dashboard.Common\Dx.Dashboard.Common.csproj">
+      <Project>{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}</Project>
+      <Name>Dx.Dashboard.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

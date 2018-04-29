@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Dx.Dashboard.Core
+namespace Dx.Dashboard.Common
 {
     public class AppCore
     {

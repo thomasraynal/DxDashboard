@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dx.Dashboard.Core", "Dx.Das
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dx.Dashboard.Cache", "Dx.Dashboard.Cache\Dx.Dashboard.Cache.csproj", "{BC709E2D-792D-4506-8EF1-30C8D05C33FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dx.Dashboard.Common", "Dx.Dashboard.Common\Dx.Dashboard.Common.csproj", "{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BC709E2D-792D-4506-8EF1-30C8D05C33FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC709E2D-792D-4506-8EF1-30C8D05C33FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC709E2D-792D-4506-8EF1-30C8D05C33FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFD7437-4332-4BC6-8DBA-E8D982329D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

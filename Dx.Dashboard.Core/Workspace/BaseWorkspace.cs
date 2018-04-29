@@ -17,6 +17,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using DevExpress.Xpf.Grid;
+using Dx.Dashboard.Common;
+using Dx.Dashboard.Cache;
 
 namespace Dx.Dashboard.Core
 {
@@ -128,14 +130,16 @@ namespace Dx.Dashboard.Core
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Tag;
-            _cache.PersistantCache.Manager.Add(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag), layout);
+            //refacto async
+            _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag), layout).Wait();
         }
 
         public void SaveCurrentLayoutAsDefault()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Name;
-            _cache.PersistantCache.Manager.Add(String.Format("{0}{1}", layoutWidgetsKey, State.Name), layout);
+            //refacto async
+            _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsKey, State.Name), layout).Wait();
         }
 
         public void SaveCurrentLayoutAsTagged()
@@ -153,7 +157,8 @@ namespace Dx.Dashboard.Core
 
         public WorkspaceLayout GetSavedLayout(String tag)
         {
-            return _cache.PersistantCache.Manager.Get(String.Format("{0}{1}", taggedLayoutWidgetKey, tag));
+            //refacto async
+            return _cache.PersistantCache.Get(String.Format("{0}{1}", taggedLayoutWidgetKey, tag)).Result;
         }
 
         public WorkspaceLayout GetCurrentLayout()
@@ -460,12 +465,12 @@ namespace Dx.Dashboard.Core
 
         private WorkspaceLayout FindRelevantLayout()
         {
-           
-            var  layout = _cache.PersistantCache.Manager.Get<WorkspaceLayout>(String.Format("{0}{1}", layoutWidgetsKey, State.Name)); 
+            //refacto async
+            var layout = _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsKey, State.Name)).Result; 
 
             if (null != layout) return layout;
-
-            layout = _cache.PersistantCache.Manager.Get<WorkspaceLayout>(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag));
+            //refacto async
+            layout = _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag)).Result;
 
             return layout;
         }

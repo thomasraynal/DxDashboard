@@ -14,9 +14,9 @@ namespace Dx.Dashboard.Cache
 
         public CacheType CacheType => CacheType.Volatile;
 
-        public DefaultMemoryCache()
+        public DefaultMemoryCache(String applicationName)
         {
-            _cache = new MemoryCache("defaultmemorycache");
+            _cache = new MemoryCache(applicationName);
         }
 
         public Task<TObject> Get(string key)

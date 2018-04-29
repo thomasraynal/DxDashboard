@@ -1,6 +1,6 @@
 ﻿using Akavache;
-using Dx.Dashboard.Core;
-using Dx.Dashboard.Core.Configuration;
+using Dx.Dashboard.Common;
+using Dx.Dashboard.Common.Configuration;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
