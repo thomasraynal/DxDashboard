@@ -28,7 +28,7 @@ namespace Dx.Dashboard.Common
 
         public T Get<T>()
         {
-            return _container.TryGetInstance<T>();
+            return _container.GetInstance<T>();
         }
 
         public IEnumerable<T> GetAll<T>()

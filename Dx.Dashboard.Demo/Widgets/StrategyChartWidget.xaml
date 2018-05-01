@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Dx.Dashboard.Demo.StrategyChartWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             d:DesignHeight="300" d:DesignWidth="300">
+ 
+        <dxc:ChartControl 
+                    Grid.Column="1"
+                    ToolTipEnabled="True" 
+                    BorderThickness="0"
+                    AnimationMode="OnLoad"
+                    Padding="0" 
+                    Margin="0"
+                    DataSource="{Binding Path=StrategyChartItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    CrosshairEnabled="True"
+			        EnableAnimation="False">
+            <dxc:ChartControl.Palette>
+                <dxc:Office2013Palette />
+            </dxc:ChartControl.Palette>
+            <dxc:ChartControl.CrosshairOptions>
+                <dxc:CrosshairOptions CrosshairLabelMode="ShowForNearestSeries"/>
+            </dxc:ChartControl.CrosshairOptions>
+            <dxc:ChartControl.Titles>
+            <dxc:Title Margin="20" Dock="Top" Foreground="White"   HorizontalAlignment="Center" Content="Market value by counterparty" FontSize="12"/>
+            </dxc:ChartControl.Titles>
+            <dxc:SimpleDiagram2D >
+            <dxc:PieSeries2D  HoleRadiusPercent="20" ArgumentScaleType="Qualitative" ArgumentDataMember="Counterparty" LabelsVisibility="True" ValueDataMember="MarketValue" ToolTipPointPattern="{}{A}: {VP:P0}">
+                    <dxc:PieSeries2D.Label>
+                        <dxc:SeriesLabel  FontSize="10" dxc:PieSeries.LabelPosition="TwoColumns" TextPattern="{}{A}: {VP:P0}"/>
+                    </dxc:PieSeries2D.Label>
+                    <dxc:PieSeries2D.Model>
+                        <dxc:BorderlessFlatPie2DModel />
+                    </dxc:PieSeries2D.Model>
+                </dxc:PieSeries2D>
+            </dxc:SimpleDiagram2D>
+        </dxc:ChartControl>
+   
+</UserControl>

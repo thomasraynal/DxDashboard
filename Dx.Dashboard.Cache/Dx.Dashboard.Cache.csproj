@@ -90,12 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheType.cs" />
-    <Compile Include="DefaultCacheStrategy.cs" />
-    <Compile Include="DefaultMemoryCache.cs" />
-    <Compile Include="DefaultPersistantCache.cs" />
+    <Compile Include="Default\DefaultCacheStrategy.cs" />
+    <Compile Include="Default\DefaultMemoryCache.cs" />
+    <Compile Include="Default\DefaultPersistantCache.cs" />
     <Compile Include="ICacheProvider.cs" />
     <Compile Include="ICacheStrategy.cs" />
-    <Compile Include="ReactiveSettingsStorage.cs" />
+    <Compile Include="Default\ReactiveSettingsStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

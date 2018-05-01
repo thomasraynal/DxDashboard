@@ -126,20 +126,18 @@ namespace Dx.Dashboard.Core
         public ReactiveCommand OpenNewWorkspace { get; private set; }
         public Workspace View { get; set; }
 
-        public void SaveCurrentLayoutAsTemplate()
+        public async Task SaveCurrentLayoutAsTemplate()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Tag;
-            //refacto async
-            _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag), layout).Wait();
+            await _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag), layout);
         }
 
-        public void SaveCurrentLayoutAsDefault()
+        public async Task SaveCurrentLayoutAsDefault()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Name;
-            //refacto async
-            _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsKey, State.Name), layout).Wait();
+            await _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsKey, State.Name), layout);
         }
 
         public void SaveCurrentLayoutAsTagged()
@@ -148,17 +146,10 @@ namespace Dx.Dashboard.Core
             var layout = GetCurrentLayout();
             layout.Name = TaggedLayoutName;
 
-            //refacto: handle dashboard side
             if (Dashboard.UserDefinedWorkspaceLayouts.Contains(layout)) Dashboard.UserDefinedWorkspaceLayouts.Remove(layout);
             Dashboard.UserDefinedWorkspaceLayouts.Add(layout);
 
             TaggedLayoutName = string.Empty;
-        }
-
-        public WorkspaceLayout GetSavedLayout(String tag)
-        {
-            //refacto async
-            return _cache.PersistantCache.Get(String.Format("{0}{1}", taggedLayoutWidgetKey, tag)).Result;
         }
 
         public WorkspaceLayout GetCurrentLayout()
@@ -371,9 +362,9 @@ namespace Dx.Dashboard.Core
 
            });
 
-            SaveLayout = ReactiveCommand.Create(() => SaveCurrentLayoutAsDefault(), notIsLoading);
+            SaveLayout = ReactiveCommand.CreateFromTask(() => SaveCurrentLayoutAsDefault(), notIsLoading);
 
-            LoadLayoutFromFile = ReactiveCommand.Create(() =>
+            LoadLayoutFromFile = ReactiveCommand.Create(async () =>
             {
                 var dialog = new OpenFileDialog()
                 {
@@ -386,7 +377,7 @@ namespace Dx.Dashboard.Core
                     var stream = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                     var formatter = new BinaryFormatter();
                     var layout = (WorkspaceLayout)formatter.Deserialize(stream);
-                    LoadLayout(layout);
+                    await LoadLayout(layout);
                 }
 
             }, notIsLoading);
@@ -397,13 +388,13 @@ namespace Dx.Dashboard.Core
 
             }, notIsLoading);
 
-            LoadTaggedLayout = ReactiveCommand.Create<WorkspaceLayout>((workspaceLayout) =>
+            LoadTaggedLayout = ReactiveCommand.Create<WorkspaceLayout>(async (workspaceLayout) =>
            {
-               LoadLayout(workspaceLayout);
+             await  LoadLayout(workspaceLayout);
 
            }, notIsLoading);
 
-            SaveTemplateLayout = ReactiveCommand.Create(SaveCurrentLayoutAsTemplate, this.WhenAny(z => z.IsLoading, (x) => !IsLoading));
+            SaveTemplateLayout = ReactiveCommand.CreateFromTask(SaveCurrentLayoutAsTemplate, this.WhenAny(z => z.IsLoading, (x) => !IsLoading));
 
             OpenNewWorkspace = ReactiveCommand.Create(() =>
             {
@@ -412,13 +403,13 @@ namespace Dx.Dashboard.Core
 
             if (loadLayout)
             {
-                this.ExecuteOnCurrentDispatcher(() =>
+                this.ExecuteOnCurrentDispatcher(async () =>
                 {
-                    var layout = FindRelevantLayout();
+                    var layout = await FindRelevantLayout();
 
                     if (null == layout) return;
 
-                    LoadLayout(layout);
+                    await LoadLayout(layout);
 
                 });
 
@@ -463,14 +454,14 @@ namespace Dx.Dashboard.Core
             return panels;
         }
 
-        private WorkspaceLayout FindRelevantLayout()
+        private async Task<WorkspaceLayout> FindRelevantLayout()
         {
-            //refacto async
-            var layout = _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsKey, State.Name)).Result; 
+
+            var layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsKey, State.Name)); 
 
             if (null != layout) return layout;
-            //refacto async
-            layout = _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag)).Result;
+
+            layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag));
 
             return layout;
         }
@@ -615,24 +606,6 @@ namespace Dx.Dashboard.Core
 
         }
 
-        public void RestoreSavedParameters(WorkspaceLayout layout)
-        {
-            //foreach (var widget in Widgets)
-            //{
-            //    var module = widget.Module;
-
-            //    if (null != module)
-            //    {
-            //        var parameters = layout.Widgets.First(x => x.Id == module.View.Id).Parameters;
-
-            //        if (parameters != null)
-            //        {
-            //            module.Parameters = parameters;
-            //            await module.RestoreParameters(parameters);
-            //        }
-            //    }
-            //}
-        }
 
         private void RestoreGridLayoutInternal(UserControl control, WidgetDescriptor descriptor)
         {
@@ -689,25 +662,19 @@ namespace Dx.Dashboard.Core
             }
 
             RestoreFloatingWidgetsGridLayouts(descriptors);
-
-   
-            
         }
 
-        internal void LoadLayout(WorkspaceLayout providedLayout = null)
+        private async Task LoadLayout(WorkspaceLayout providedLayout = null)
         {
              Widgets.Clear();
 
-            var layout = providedLayout ??  FindRelevantLayout();
+            var layout = providedLayout ??  await FindRelevantLayout();
 
             if (null == layout) return;
 
              RestoreWorspaceLayout(layout);
 
              RestoreGridLayouts(layout.Widgets);
-
-             RestoreSavedParameters(layout);
-
         }
 
         private void FillPanel(LayoutPanel panel, IEnumerable<IWidget> widgets)

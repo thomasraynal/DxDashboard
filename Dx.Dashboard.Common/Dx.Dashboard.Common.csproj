@@ -72,14 +72,20 @@
     <Compile Include="App\AppCore.cs" />
     <Compile Include="App\AppCoreRegistry.cs" />
     <Compile Include="App\IAppContainer.cs" />
-    <Compile Include="Config\DashboardConfigurationBase.cs" />
-    <Compile Include="Config\IDashboardConfiguration.cs" />
-    <Compile Include="IPropertyCache.cs" />
-    <Compile Include="ISchedulerProvider.cs" />
-    <Compile Include="IViewModel.cs" />
+    <Compile Include="Cache\DefaultPropertyCache.cs" />
+    <Compile Include="Infra\IDashboardConfiguration.cs" />
+    <Compile Include="Cache\IPropertyCache.cs" />
+    <Compile Include="Infra\DefaultExceptionHandler.cs" />
+    <Compile Include="Infra\ICanLog.cs" />
+    <Compile Include="Infra\IClientLogger.cs" />
+    <Compile Include="Infra\IExceptionHandler.cs" />
+    <Compile Include="Infra\ISchedulerProvider.cs" />
+    <Compile Include="Infra\IViewModel.cs" />
+    <Compile Include="Infra\SchedulerProvider.cs" />
+    <Compile Include="Infra\UhandledExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyCacheBase.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="Cache\PropertyCacheBase.cs" />
+    <Compile Include="Infra\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

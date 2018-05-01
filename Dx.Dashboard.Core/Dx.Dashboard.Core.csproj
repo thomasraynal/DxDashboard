@@ -109,14 +109,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IClientLogger.cs" />
     <Compile Include="Container\IDashboard.cs" />
-    <Compile Include="DevExpressHelper.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Workspace\DevExpressHelper.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
     <Compile Include="Extensions\ReactiveUiExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UserControlExtension.cs" />
-    <Compile Include="IExceptionHandler.cs" />
     <Compile Include="Menu\CheckButtonDescriptor.cs" />
     <Compile Include="Menu\SeparatorItemDescriptor.cs" />
     <Compile Include="Menu\WidgetButtonItemDescriptor.cs" />
@@ -124,38 +123,36 @@
     <Compile Include="Menu\CustomItemDescriptor.cs" />
     <Compile Include="Menu\ListItemDescriptor.cs" />
     <Compile Include="Menu\MenuItemTemplateSelector.cs" />
-    <Compile Include="Registry\DashboardRegistry.cs" />
+    <Compile Include="DashboardRegistry.cs" />
     <Compile Include="Menu\BaseItemDescriptor.cs" />
     <Compile Include="Menu\IItemDescriptor.cs" />
     <Compile Include="Menu\StaticItemDescriptor.cs" />
     <Compile Include="Menu\ButtonDescriptor.cs" />
-    <Compile Include="SchedulerProvider.cs" />
-    <Compile Include="UhandledExceptionHandler.cs" />
-    <Compile Include="Widget.cs" />
-    <Compile Include="WidgetInstanciationFailure.cs" />
+    <Compile Include="Widget\Widget.cs" />
+    <Compile Include="Widget\WidgetInstanciationFailure.cs" />
     <Compile Include="Widget\IDockItem.cs" />
     <Compile Include="Widget\IWidget.cs" />
     <Compile Include="Widget\WidgetAttribute.cs" />
     <Compile Include="Widget\WidgetAttributeNotFound.cs" />
     <Compile Include="Widget\WidgetCategory.cs" />
     <Compile Include="Widget\WidgetViewModel.cs" />
-    <Compile Include="IWorkspaceState.cs" />
+    <Compile Include="Workspace\IWorkspaceState.cs" />
     <Compile Include="Workspace\MissingWidgetException.cs" />
     <Compile Include="Workspace\SmartReactiveList.cs" />
     <Compile Include="Workspace\WorkspaceSaveLoadVisibilityConverter.cs" />
-    <Compile Include="ColumnSettingDescriptor.cs" />
+    <Compile Include="Grid\ColumnSettingDescriptor.cs" />
     <Compile Include="Container\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Container\BaseDashboard.cs" />
     <Compile Include="Workspace\IWorkspace.cs" />
-    <Compile Include="SerializedGridLayout.cs" />
-    <Compile Include="SerializedWidget.cs" />
-    <Compile Include="GridLayoutItem.cs" />
-    <Compile Include="WidgetDescriptor.cs" />
-    <Compile Include="SerializeLayout.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="VisualTreeWalker.cs" />
+    <Compile Include="Grid\SerializedGridLayout.cs" />
+    <Compile Include="Widget\SerializedWidget.cs" />
+    <Compile Include="Grid\GridLayoutItem.cs" />
+    <Compile Include="Widget\WidgetDescriptor.cs" />
+    <Compile Include="Workspace\SerializedLayout.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Wpf\VisualTreeWalker.cs" />
     <Compile Include="Workspace\Workspace.xaml.cs">
       <DependentUpon>Workspace.xaml</DependentUpon>
     </Compile>
@@ -165,7 +162,7 @@
     <Compile Include="Workspace\WorkspaceState.cs" />
     <Compile Include="Wpf\Commands.cs" />
     <Compile Include="Wpf\Converters.cs" />
-    <Compile Include="XElementExtension.cs" />
+    <Compile Include="Extensions\XElementExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
