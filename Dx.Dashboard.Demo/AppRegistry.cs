@@ -28,7 +28,6 @@ namespace Dx.Dashboard.Demo
 
             For<IDashboard<DemoWorkspaceState>>().Use<DashboardViewModel>().Singleton();
             For<IWorkspace<DemoWorkspaceState>>().Use<DemoWorkspaceViewModel>();
-            //Forward<DashboardViewModel, IDashboard<DemoWorkspaceState>>();
             For<IDashboardConfiguration>().Use<DemoConfiguration>().Singleton();
 
             For<WindowFactory>().Use<WindowFactory>().Singleton();
@@ -40,17 +39,14 @@ namespace Dx.Dashboard.Demo
             For<IStrategy>().Use<Strategy>();
             For<ITrade>().Use<Trade>();
 
-  
+
             For<IEntityService<IPrice>>().Use<PriceService>().Singleton();
             For<IEntityService<IStrategy>>().Use<StrategyService>().Singleton();
 
             Scan(scanner =>
             {
                 scanner.AssembliesAndExecutablesFromApplicationBaseDirectory();
-
                 scanner.WithDefaultConventions();
-
-                //scanner.LookForRegistries();
             });
         }
     }

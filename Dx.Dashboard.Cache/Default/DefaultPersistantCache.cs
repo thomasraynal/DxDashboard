@@ -1,5 +1,6 @@
 ﻿using Akavache;
 using Dx.Dashboard.Cache;
+using Dx.Dashboard.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Dx.Dashboard.Cache
         {
             get
             {
-                return BlobCache.UserAccount;
+                return AppCore.Instance.Get<IBlobCache>();
             }
         }
 

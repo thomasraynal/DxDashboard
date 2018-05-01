@@ -10,6 +10,7 @@ namespace Dx.Dashboard.Core
 {
     public interface IDashboard<TState> where TState : class, IWorkspaceState
     {
+        IEnumerable<WidgetAttribute> AvailableWidgets { get; }
         ListItemDescriptor CreateWidgetMenu(String menuTitle, ImageSource glyph);
         ReactiveCommand CreateWidget { get; }
         Task<IWidget> InstanciateWidget(Type widget, String cacheId);

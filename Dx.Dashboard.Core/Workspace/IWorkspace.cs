@@ -17,10 +17,29 @@ namespace Dx.Dashboard.Core
         SmartReactiveList<IWidget> Widgets { get; }
     }
 
-    public interface IWorkspace<TState>: IWidgetHolder
+    public interface IWorkspace<TState> : IWidgetHolder
         where TState : class, IWorkspaceState
     {
         Task Initialize(TState state);
         TState State { get; }
+
+        ReactiveCommand SaveLayout { get; }
+        ReactiveCommand SaveTaggedLayout { get; }
+        ReactiveCommand DeleteTaggedLayout { get; }
+        ReactiveCommand SaveTemplateLayout { get; }
+        ReactiveCommand ClearCurrentLayout { get; }
+        ReactiveCommand SaveLayoutAsFile { get; }
+        ReactiveCommand LoadLayoutFromFile { get; }
+        ReactiveCommand LoadTaggedLayout { get; }
+        ReactiveCommand OpenNewWorkspace { get; }
+
+        IDashboard<TState> Dashboard { get; set; }
+        string Header { get; set; }
+        ReactiveList<IMenuItemDescriptor> MenuItems { get; set; }
+        WorkspaceLayout GetCurrentLayout();
+        Task SaveCurrentLayoutAsDefault();
+        void SaveCurrentLayoutAsTagged();
+        Task SaveCurrentLayoutAsTemplate();
+
     }
 }

@@ -22,8 +22,7 @@ using Dx.Dashboard.Cache;
 
 namespace Dx.Dashboard.Core
 {
-    public abstract class BaseWorkspace<TState> : ViewModelBase, IWorkspace<TState>
-        where TState: class, IWorkspaceState
+    public abstract class BaseWorkspace<TState> : ViewModelBase, IWorkspace<TState> where TState: class, IWorkspaceState
     {
         #region Menu
 
@@ -638,7 +637,7 @@ namespace Dx.Dashboard.Core
 
         }
 
-        public void RestoreGridLayouts(IEnumerable<WidgetDescriptor> descriptors)
+        private void RestoreGridLayouts(IEnumerable<WidgetDescriptor> descriptors)
         {
             var processedPanels = new List<LayoutPanel>();
 
@@ -664,7 +663,7 @@ namespace Dx.Dashboard.Core
             RestoreFloatingWidgetsGridLayouts(descriptors);
         }
 
-        private async Task LoadLayout(WorkspaceLayout providedLayout = null)
+        public async Task LoadLayout(WorkspaceLayout providedLayout = null)
         {
              Widgets.Clear();
 
