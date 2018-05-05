@@ -11,15 +11,14 @@ namespace Dx.Dashboard.Core
     public interface IDashboard<TState> where TState : class, IWorkspaceState
     {
         IEnumerable<WidgetAttribute> AvailableWidgets { get; }
-        ListItemDescriptor CreateWidgetMenu(String menuTitle, ImageSource glyph);
-        ReactiveCommand CreateWidget { get; }
-        Task<IWidget> InstanciateWidget(Type widget, String cacheId);
+        ReactiveCommand CreateWidgetCommand { get; }
+        Task<IWidget> CreateWidget(Type widget, String cacheId);
         ReactiveList<WorkspaceLayout> UserDefinedWorkspaceLayouts { get; set; }
         ReactiveList<IWorkspace<TState>> AvailableWorkspaces { get; set; }
         IWorkspace<TState> CurrentWorkspace { get; set; }
-        TState GetCurrentState();
+        TState GetState();
         bool HideMenus { get; set; }
         ReactiveList<IMenuItemDescriptor> MenuItems { get; set; }
-        Task CreateNewWorkspace(TState name, bool loadLayout);
+        Task CreateWorkspace(TState name, bool loadLayout);
     }
 }

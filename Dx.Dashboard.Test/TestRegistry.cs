@@ -41,9 +41,12 @@ namespace Dx.Dashboard.Test
             For<IPropertyCache>().Use<ReactiveSettingsStorageProxy>();
             For<IBlobCache>().Use(() => BlobCache.InMemory);
 
-            For<IDashboard<TestWorkspaceState>>().Use<TestDashboard>().Singleton();
+            For<IDashboard<TestWorkspaceState>>().Use<TestDashboard>();
             For<IWorkspace<TestWorkspaceState>>().Use<TestWorkspace>();
             For<IDashboardConfiguration>().Use<TestConfiguration>().Singleton();
+
+            
+            For<ISchedulerProvider>().Use<DefaultSchedulerProvider>().Singleton();
 
             For<ICacheStrategy<List<WorkspaceLayout>>>().Use<DefaultCacheStrategy<List<WorkspaceLayout>>>().Singleton();
             For<ICacheStrategy<WorkspaceLayout>>().Use<DefaultCacheStrategy<WorkspaceLayout>>().Singleton();

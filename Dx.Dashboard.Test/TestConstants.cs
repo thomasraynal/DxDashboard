@@ -10,6 +10,7 @@ namespace Dx.Dashboard.Test
     public static class TestConstants
     {
         public static String ApplicationName = "TEST";
+        public static String WidgetMenuName = "My Widgets";
         public static WidgetCategory TestCategory = new WidgetCategory("Features", DevExpressHelper.GetGlyph("ExportToXLS_16x16.png"));
     }
 }

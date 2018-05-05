@@ -33,13 +33,10 @@ namespace Dx.Dashboard.Core
         ReactiveCommand LoadTaggedLayout { get; }
         ReactiveCommand OpenNewWorkspace { get; }
 
+        String TaggedLayoutLabel { get; set; }
         IDashboard<TState> Dashboard { get; set; }
         string Header { get; set; }
-        ReactiveList<IMenuItemDescriptor> MenuItems { get; set; }
-        WorkspaceLayout GetCurrentLayout();
-        Task SaveCurrentLayoutAsDefault();
-        void SaveCurrentLayoutAsTagged();
-        Task SaveCurrentLayoutAsTemplate();
+
 
     }
 }

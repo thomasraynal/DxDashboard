@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container\IDashboard.cs" />
+    <Compile Include="DxDashboardConstants.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Workspace\DevExpressHelper.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />

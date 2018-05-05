@@ -45,7 +45,7 @@
                 <dxb:BarSubItem.Items>
                     <dxb:BarSubItem Glyph="{dx:DXImage Image=Save_16x16.png}"  BarItemDisplayMode="ContentAndGlyph"  Content="Save As">
                         <dxb:BarSubItem.Items>
-                            <dxb:BarEditItem  EditValue="{Binding Path=TaggedLayoutName}" Glyph="{dx:DXImage Image=Text_16x16.png}">
+                            <dxb:BarEditItem  EditValue="{Binding Path=TaggedLayoutLabel}" Glyph="{dx:DXImage Image=Text_16x16.png}">
                                 <dxb:BarEditItem.EditSettings>
                                     <dxe:TextEditSettings />
                                 </dxb:BarEditItem.EditSettings>

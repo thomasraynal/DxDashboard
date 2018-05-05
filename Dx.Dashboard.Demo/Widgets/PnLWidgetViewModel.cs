@@ -88,8 +88,8 @@ namespace Dx.Dashboard.Demo
             OpenStrategyWorkspace = ReactiveCommand.Create<StrategyWidgetViewModel>((vm) =>
             {
                 var dashboard = AppCore.Instance.Get<IDashboard<DemoWorkspaceState>>();
-                var state = dashboard.GetCurrentState();
-                dashboard.CreateNewWorkspace(new DemoWorkspaceState(vm.Name, state.Date, DemoWorkspaceType.Strategy)
+                var state = dashboard.GetState();
+                dashboard.CreateWorkspace(new DemoWorkspaceState(vm.Name, state.Date, DemoWorkspaceType.Strategy)
                 {
                     Strategy = vm.Strategy
                 },true);

@@ -12,9 +12,11 @@ namespace Dx.Dashboard.Test
 
         public TestDashboard()
         {
+            var widgets = CreateWidgetMenu(TestConstants.WidgetMenuName);
+            MenuItems.Add(widgets);
         }
 
-        public override TestWorkspaceState GetCurrentState()
+        public override TestWorkspaceState GetState()
         {
             return new TestWorkspaceState(CurrentWorkspace.State.Name, CurrentWorkspace.State.Tag);
         }

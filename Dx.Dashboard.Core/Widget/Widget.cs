@@ -12,15 +12,7 @@ namespace Dx.Dashboard.Core
         public String Categories { get; set; }
         public Type View { get; set; }
         public bool Hide { get; set; }
-        public bool IsTransverse { get; set; }
-        public bool IsGroupCompliable { get; set; }
-        public bool IsCustom
-        {
-            get
-            {
-                return View == null;
-            }
-        }
+
         public Widget(string categories, string name, Type view, bool hide = false)
         {
             View = view;

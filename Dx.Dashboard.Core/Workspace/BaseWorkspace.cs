@@ -24,34 +24,18 @@ namespace Dx.Dashboard.Core
 {
     public abstract class BaseWorkspace<TState> : ViewModelBase, IWorkspace<TState> where TState: class, IWorkspaceState
     {
-        #region Menu
-
-        public ReactiveList<IMenuItemDescriptor> _menuItems;
-        public ReactiveList<IMenuItemDescriptor> MenuItems
-        {
-            get { return _menuItems; }
-            set { this.RaiseAndSetIfChanged(ref _menuItems, value); }
-        }
-
-        #endregion
 
         #region Constants
 
         private String layoutDefaultExt = ".layout";
         private String layoutDefaultFilter = "Layouts (.layout)|*.layout";
 
-        public const string layoutWidgetsTemplateKey = "LAYOUT_WIDGETS_TEMPLATE_";
-        public const string layoutWidgetsKey = "LAYOUT_WIDGETS_";
-
-        public const string taggedLayoutWidgetKey = "LAYOUT_WIDGETS_TAGGED_";
-        public const string customWidgetKey = "LAYOUT_WIDGETS_CUSTOM_";
-
         #endregion
 
         #region Properties
 
         public String _layoutName;
-        public String TaggedLayoutName
+        public String TaggedLayoutLabel
         {
             get { return _layoutName; }
             set { this.RaiseAndSetIfChanged(ref _layoutName, value); }
@@ -125,30 +109,29 @@ namespace Dx.Dashboard.Core
         public ReactiveCommand OpenNewWorkspace { get; private set; }
         public Workspace View { get; set; }
 
-        public async Task SaveCurrentLayoutAsTemplate()
+        private async Task SaveCurrentLayoutAsTemplate()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Tag;
-            await _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag), layout);
+            await _cache.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag), layout);
         }
 
-        public async Task SaveCurrentLayoutAsDefault()
+        private async Task SaveCurrentLayoutAsDefault()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Name;
-            await _cache.PersistantCache.Put(String.Format("{0}{1}", layoutWidgetsKey, State.Name), layout);
+            await _cache.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name), layout);
         }
 
-        public void SaveCurrentLayoutAsTagged()
+        private void SaveCurrentLayoutAsTagged()
         {
-           
             var layout = GetCurrentLayout();
-            layout.Name = TaggedLayoutName;
+            layout.Name = TaggedLayoutLabel;
 
             if (Dashboard.UserDefinedWorkspaceLayouts.Contains(layout)) Dashboard.UserDefinedWorkspaceLayouts.Remove(layout);
             Dashboard.UserDefinedWorkspaceLayouts.Add(layout);
 
-            TaggedLayoutName = string.Empty;
+            TaggedLayoutLabel = string.Empty;
         }
 
         public WorkspaceLayout GetCurrentLayout()
@@ -381,7 +364,7 @@ namespace Dx.Dashboard.Core
 
             }, notIsLoading);
 
-            SaveTaggedLayout = ReactiveCommand.Create(SaveCurrentLayoutAsTagged, this.WhenAny(vm => vm.IsLoading, vm => vm.TaggedLayoutName, (isloading, taggedLayoutName) => !isloading.Value && !String.IsNullOrEmpty(taggedLayoutName.Value)));
+            SaveTaggedLayout = ReactiveCommand.Create(SaveCurrentLayoutAsTagged, this.WhenAny(vm => vm.IsLoading, vm => vm.TaggedLayoutLabel, (isloading, taggedLayoutName) => !isloading.Value && !String.IsNullOrEmpty(taggedLayoutName.Value)));
             DeleteTaggedLayout = ReactiveCommand.Create<WorkspaceLayout>((workspaceLayout) =>
             {
 
@@ -397,7 +380,7 @@ namespace Dx.Dashboard.Core
 
             OpenNewWorkspace = ReactiveCommand.Create(() =>
             {
-                Dashboard.CreateNewWorkspace(State, false);
+                Dashboard.CreateWorkspace(State, false);
             });
 
             if (loadLayout)
@@ -456,11 +439,11 @@ namespace Dx.Dashboard.Core
         private async Task<WorkspaceLayout> FindRelevantLayout()
         {
 
-            var layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsKey, State.Name)); 
+            var layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name)); 
 
             if (null != layout) return layout;
 
-            layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", layoutWidgetsTemplateKey, State.Tag));
+            layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag));
 
             return layout;
         }
@@ -588,7 +571,7 @@ namespace Dx.Dashboard.Core
 
             foreach (var widget in layout.Widgets)
             {
-                var widgetInstance = Dashboard.InstanciateWidget(Type.GetType(widget.Type), widget.UniqueId).Result;
+                var widgetInstance = Dashboard.CreateWidget(Type.GetType(widget.Type), widget.UniqueId).Result;
                 if (null == widgetInstance) throw new MissingWidgetException(widget.Type);
                 widgetInstance.ParentName = widget.ParentName;
                 widgetInstance.GridsLayout = widget.GridsLayout;

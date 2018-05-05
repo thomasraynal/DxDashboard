@@ -15,9 +15,8 @@ namespace Dx.Dashboard.Core
 {
     public abstract class BaseDashboard<TState> : ViewModelBase, IDashboard<TState> where TState : class, IWorkspaceState
     {
-        private const String userDefinedLayouts = "UserDefinedWorkspaceLayouts";
-
-        public ReactiveCommand CreateWidget { get; private set; }
+   
+        public ReactiveCommand CreateWidgetCommand { get; private set; }
 
         public ICacheStrategy<List<WorkspaceLayout>> Cache
         {
@@ -77,7 +76,7 @@ namespace Dx.Dashboard.Core
 
         #endregion
 
-        public async virtual Task<IWidget> InstanciateWidget(Type widget, String cacheId = null)
+        public async virtual Task<IWidget> CreateWidget(Type widget, String cacheId = null)
         {
             var args = new ExplicitArguments();
 
@@ -101,7 +100,7 @@ namespace Dx.Dashboard.Core
 
             AvailableWorkspaces = new ReactiveList<IWorkspace<TState>>();
 
-            UserDefinedWorkspaceLayouts = new ReactiveList<WorkspaceLayout>(Cache.PersistantCache.Get(userDefinedLayouts).Result);
+            UserDefinedWorkspaceLayouts = new ReactiveList<WorkspaceLayout>(Cache.PersistantCache.Get(DxDashboardConstants.userDefinedLayouts).Result);
 
             _availableWidgets = AppContainer.ObjectProvider.Model.AllInstances
              .Where(i => i.ReturnedType.GetCustomAttributes(true).Any(attribute => typeof(WidgetAttribute).IsAssignableFrom(attribute.GetType())))
@@ -121,32 +120,34 @@ namespace Dx.Dashboard.Core
             this.WhenAnyObservable(vm => vm.UserDefinedWorkspaceLayouts.ItemsAdded, vm => vm.UserDefinedWorkspaceLayouts.ItemsRemoved)
                 .Subscribe(obs =>
                 {
-                    Cache.PersistantCache.Put(userDefinedLayouts, UserDefinedWorkspaceLayouts.ToList());
+                    Cache.PersistantCache.Put(DxDashboardConstants.userDefinedLayouts, UserDefinedWorkspaceLayouts.ToList());
                 });
 
 
-            CreateWidget = ReactiveCommand.Create<String>(async (name) =>
+            CreateWidgetCommand = ReactiveCommand.Create<String>(async (name) =>
             {
                 var widgets = AvailableWidgets.First(widget => widget.Name == name);
 
                 var @ref = AppContainer.ObjectProvider.Model.AllInstances
                 .First(i => i.ReturnedType.GetCustomAttributes(true).Any(attribute => typeof(WidgetAttribute).IsAssignableFrom(attribute.GetType()) && (attribute as WidgetAttribute).Name ==  name));
                 
-                var instance = await InstanciateWidget(@ref.ReturnedType);
+                var instance = await CreateWidget(@ref.ReturnedType);
                 
                 CurrentWorkspace.Widgets.Add(instance);
 
             });
 
-            AppContainer.ObjectProvider.Configure(conf =>
-            {
-                conf.For<IDashboard<TState>>().Use(this).Singleton();
-            });
+            //AppContainer.ObjectProvider.Configure(conf =>
+            //{
+            //    conf.For<IDashboard<TState>>().Use(this).Singleton();
+            //});
         }
 
 
-        public ListItemDescriptor CreateWidgetMenu(String menuTitle, ImageSource glyph)
+        protected ListItemDescriptor CreateWidgetMenu(String menuTitle= "Widgets", ImageSource glyph = null)
         {
+
+            if (null == glyph) glyph = DevExpressHelper.GetGlyph("GlobalColorScheme_16x16.png");
 
             var menu = new ListItemDescriptor(menuTitle, glyph);
 
@@ -171,14 +172,14 @@ namespace Dx.Dashboard.Core
                     }
                 }
 
-                root.Items.Add((new WidgetButtonItemDescriptor(item.Name, item, item.Glyph) { Command = CreateWidget }));
+                root.Items.Add((new WidgetButtonItemDescriptor(item.Name, item, item.Glyph) { Command = CreateWidgetCommand }));
 
             }
 
             return menu;
         }
 
-        public async Task CreateNewWorkspace(TState state, bool loadLayout)
+        public async Task CreateWorkspace(TState state, bool loadLayout)
         {
 
             var candidate = AvailableWorkspaces.FirstOrDefault(wspace => wspace.State.Equals(state));
@@ -203,7 +204,7 @@ namespace Dx.Dashboard.Core
 
         }
 
-        public abstract TState GetCurrentState();
+        public abstract TState GetState();
     }
 
 }

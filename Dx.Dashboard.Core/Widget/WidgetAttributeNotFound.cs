@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Dx.Dashboard.Core
 {
-
     [Serializable]
     public class WidgetAttributeNotFound : Exception
     {

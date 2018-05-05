@@ -36,10 +36,10 @@ namespace Dx.Dashboard.Demo
         protected async override Task InitializeInternal()
         {
             var state = new DemoWorkspaceState("PnL View", SelectedDate, DemoWorkspaceType.PnL);
-            await CreateNewWorkspace(state, true);
+            await CreateWorkspace(state, true);
         }
 
-        public override DemoWorkspaceState GetCurrentState()
+        public override DemoWorkspaceState GetState()
         {
             return new DemoWorkspaceState(CurrentWorkspace.State.Name, SelectedDate, CurrentWorkspace.State.Type);
         }
@@ -51,10 +51,9 @@ namespace Dx.Dashboard.Demo
             AvailableDates = new ReactiveList<DateTime>(Enumerable.Range(0, 5).Select(offset => DateTime.Now.AddDays(-offset)));
             SelectedDate = AvailableDates.First();
 
-          //  MenuItems.Add(new StaticItemDescriptor(string.Empty, DashboardDemoHelper.GetIconAsFrame()));
             MenuItems.Add(new StaticItemDescriptor(String.Format("{0} - {1}", config.ApplicationName, config.Version)));
 
-            _widgetMenu = CreateWidgetMenu("Widgets", DevExpressHelper.GetGlyph("GlobalColorScheme_16x16.png"));
+            _widgetMenu = CreateWidgetMenu();
 
             MenuItems.Add(_widgetMenu);
 
