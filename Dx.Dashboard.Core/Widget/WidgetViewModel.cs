@@ -109,13 +109,7 @@ namespace Dx.Dashboard.Core
 
         public virtual bool AllowGridSaveLayout { get; protected set; }
 
-        public string UniqueId
-        {
-            get
-            {
-                return ViewModelUniqueId;
-            }
-        }
+        public string ViewModelId { get; private set; }
 
         public WidgetViewModel(TWorkspace host, String cacheId) : base(cacheId)
         {
@@ -138,10 +132,10 @@ namespace Dx.Dashboard.Core
             return new WidgetDescriptor()
             {
                 DockId = DockId,
-                UniqueId = UniqueId,
+                ViewModelId = ViewModelId,
                 IsFloating = IsFloating,
-                ParentName = this.ParentName,
-                Type = this.GetType().AssemblyQualifiedName,
+                ParentName = ParentName,
+                Type = GetType().AssemblyQualifiedName,
                 GridsLayout = GridsLayout,
                 PivotGridsLayout = PivotGridsLayout
             };

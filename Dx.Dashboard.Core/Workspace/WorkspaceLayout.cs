@@ -59,7 +59,7 @@ namespace Dx.Dashboard.Core
 
                     target.Widget = new SerializedWidget()
                     {
-                        Id = widget.UniqueId,
+                        Id = widget.ViewModelId,
                         SerializedGridLayouts = widget.GridsLayout.Any() ? widget.GridsLayout.Select(y => SerializedGridLayout.GetLayout(y.Layout)).ToList() : null
                     };
                 }

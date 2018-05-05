@@ -9,7 +9,7 @@ namespace Dx.Dashboard.Core
 {
     public interface IWidget: IDockItem
     {
-        String UniqueId { get; }
+        String ViewModelId { get; }
         String Name { get; }
         String Header { get; set; }
         UserControl View { get; }

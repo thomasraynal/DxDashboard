@@ -26,7 +26,7 @@ namespace Dx.Dashboard.Common
 
         public async Task Initialize(ViewModelBase model)
         {
-            _cacheKey = model.ViewModelUniqueId;
+            _cacheKey = model.ViewModelId;
             _model = model;
             await InitializeInternal();
             _isInitialized = true;

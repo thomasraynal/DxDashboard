@@ -55,6 +55,15 @@ namespace Dx.Dashboard.Test
             return tcs.Task;
         }
 
+        [SetUp]
+        public void Setup()
+        {
+            AppCore.Instance.ObjectProvider.Configure((conf) =>
+            {
+                conf.For<IDashboard<TestWorkspaceState>>().ClearAll().Use(new TestDashboard());
+            });
+        }
+
         private void Wait(int count)
         {
             for(var i= 0; i< count; i++)
@@ -154,10 +163,10 @@ namespace Dx.Dashboard.Test
         }
 
         [Test]
-        public void ShouldSaveTemplatedLayout()
+        public async Task ShouldSaveTemplatedLayout()
         {
 
-             StartSTATask(async () =>
+            await StartSTATask(async () =>
             {
                 var testDashboard = AppCore.Instance.Get<IDashboard<TestWorkspaceState>>();
                 var testWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada2", "TYPE"), true);
@@ -180,7 +189,7 @@ namespace Dx.Dashboard.Test
                 Assert.AreEqual(testWidget.Name, newWorkspace.Widgets.First().Name);
 
               
-            }).Wait();
+            });
 
         }
 
@@ -199,16 +208,20 @@ namespace Dx.Dashboard.Test
                 testWorkspace.TaggedLayoutLabel = "TAGGED";
 
                 await testWorkspace.SaveTaggedLayout.ExecuteIfPossible();
+                Wait(3);
 
-                var newWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada3", "TAGGED"), true);
+               
+                var taggedLayout = testDashboard.UserDefinedWorkspaceLayouts.First();
+                var testWorkspace2 = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada3", "TYPE"), true);
+                await testWorkspace2.LoadTaggedLayout.ExecuteIfPossible(taggedLayout);
 
                 Wait(3);
 
                 Assert.AreEqual(2, testDashboard.AvailableWorkspaces.Count());
 
-                Assert.AreEqual(currentLayoutWidgets, newWorkspace.Widgets.Count());
+                Assert.AreEqual(currentLayoutWidgets,  testDashboard.CurrentWorkspace.Widgets.Count());
 
-                Assert.AreEqual(testWidget.Name, newWorkspace.Widgets.First().Name);
+                Assert.AreEqual(testWidget.Name, testDashboard.CurrentWorkspace.Widgets.First().Name);
 
             });
         }

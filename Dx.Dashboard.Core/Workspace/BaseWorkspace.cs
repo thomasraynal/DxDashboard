@@ -52,7 +52,7 @@ namespace Dx.Dashboard.Core
         }
 
         private Guid _id;
-        public Guid Id
+        public Guid WorkspaceId
         {
             get { return _id; }
         }
@@ -131,7 +131,10 @@ namespace Dx.Dashboard.Core
             if (Dashboard.UserDefinedWorkspaceLayouts.Contains(layout)) Dashboard.UserDefinedWorkspaceLayouts.Remove(layout);
             Dashboard.UserDefinedWorkspaceLayouts.Add(layout);
 
-            TaggedLayoutLabel = string.Empty;
+            this.ExecuteOnCurrentDispatcher(() =>
+            {
+                TaggedLayoutLabel = string.Empty;
+            });  
         }
 
         public WorkspaceLayout GetCurrentLayout()
@@ -222,12 +225,12 @@ namespace Dx.Dashboard.Core
             if ((tab = (obj as IWorkspace<TState>)) == null)
                 return false;
 
-            return tab.Id == this.Id;
+            return tab.WorkspaceId == this.WorkspaceId;
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return WorkspaceId.GetHashCode();
         }
 
         #endregion
@@ -240,8 +243,6 @@ namespace Dx.Dashboard.Core
         {
             State = state;
             Header = state.Name;
-
-      
             await InitializeWorkspaceInternal();
         }
 
@@ -571,7 +572,7 @@ namespace Dx.Dashboard.Core
 
             foreach (var widget in layout.Widgets)
             {
-                var widgetInstance = Dashboard.CreateWidget(Type.GetType(widget.Type), widget.UniqueId).Result;
+                var widgetInstance = Dashboard.CreateWidget(Type.GetType(widget.Type), widget.ViewModelId).Result;
                 if (null == widgetInstance) throw new MissingWidgetException(widget.Type);
                 widgetInstance.ParentName = widget.ParentName;
                 widgetInstance.GridsLayout = widget.GridsLayout;

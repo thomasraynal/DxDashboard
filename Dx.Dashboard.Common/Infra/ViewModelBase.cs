@@ -59,9 +59,8 @@ namespace Dx.Dashboard.Common
             }
         }
 
-        public String ViewModelUniqueId { get; set; }
-
         public Window Host { get; set; }
+        public string ViewModelId { get; private set; }
 
         protected virtual Task InitializeInternal()
         {
@@ -75,7 +74,7 @@ namespace Dx.Dashboard.Common
 
         public ViewModelBase(String viewModelId = null)
         {
-            ViewModelUniqueId = viewModelId ?? Guid.NewGuid().ToString();
+            ViewModelId = viewModelId ?? Guid.NewGuid().ToString();
             _propertyCache = AppCore.Instance.Get<IPropertyCache>();
             _propertyCache.Initialize(this).Wait();
             _disposable = new CompositeDisposable();

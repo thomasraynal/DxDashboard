@@ -22,6 +22,6 @@ namespace Dx.Dashboard.Core
         public List<GridLayoutItem> GridsLayout { get; set; }
         public string ParentName { get; set; }
         public bool IsFloating { get; set; }
-        public string UniqueId { get; set; }
+        public string ViewModelId { get; set; }
     }
 }

@@ -49,6 +49,7 @@ namespace Dx.Dashboard.Demo
 
             await model.Initialize();
 
+            //injaect via DI
             model.Host = window;
 
             window.DataContext = null;

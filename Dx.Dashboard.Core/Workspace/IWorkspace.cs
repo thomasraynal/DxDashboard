@@ -12,7 +12,7 @@ namespace Dx.Dashboard.Core
     public interface IWidgetHolder
     {
         bool IsSelected { get; }
-        Guid Id { get; }
+        Guid WorkspaceId { get; }
         Workspace View { get; set; }
         SmartReactiveList<IWidget> Widgets { get; }
     }
