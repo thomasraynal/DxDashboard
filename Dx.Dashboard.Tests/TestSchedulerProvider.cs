@@ -6,7 +6,7 @@ using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     public class TestSchedulerProvider : ISchedulerProvider
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Reflection;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     public class TestConfiguration : IDashboardConfiguration
     {

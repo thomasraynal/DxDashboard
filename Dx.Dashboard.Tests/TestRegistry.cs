@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
 
     public class ReactiveSettingsStorageProxy : ReactiveSettingsStorage

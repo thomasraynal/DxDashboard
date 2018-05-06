@@ -1,0 +1,59 @@
+# configuration for master
+-
+  branches:
+    only:
+    - master
+
+  environment:
+    # Set the DOTNET_SKIP_FIRST_TIME_EXPERIENCE environment variable to stop wasting time caching packages
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    # Disable sending usage data to Microsoft
+    DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+  version: 6.2.0.{build}
+  image: Visual Studio 2017
+  configuration: Release
+  install:
+  - cmd: 
+  nuget:
+    disable_publish_on_pr: true
+  build_script:
+  - cmd: >-
+      dotnet --info
+      dotnet build Dx.Dashboard.sln --configuration Release /p:Version=%APPVEYOR_BUILD_VERSION%
+
+  test: off
+  test_script:
+  - cmd: >-
+      cd %APPVEYOR_BUILD_FOLDER%
+      dotnet test Dx.Dashboard\Dx.Dashboard.Tests.csproj --configuration Release --no-build
+
+# configuration for version 4
+-
+  version: 4.16.0.{build}
+  branches:
+    only:
+    - Version4
+  image: Visual Studio 2017
+  configuration: Release
+  platform: Any CPU
+  assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+  nuget:
+    account_feed: true
+    disable_publish_on_pr: true
+  before_build:
+  - cmd: >-
+      appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+      nuget restore Dx.Dashboard.sln
+  build:
+    project: Dx.Dashboard.sln
+    publish_nuget: true
+    publish_nuget_symbols: true
+    include_nuget_references: true
+    verbosity: minimal
+  test: off

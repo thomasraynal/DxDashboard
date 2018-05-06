@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     public class Void : UserControl 
     {

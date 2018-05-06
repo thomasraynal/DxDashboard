@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dx.Dashboard.Cache;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     public class TestWorkspace : BaseWorkspace<TestWorkspaceState>
     {

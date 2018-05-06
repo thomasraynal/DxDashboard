@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     [TestWidgetOne]
     public class TestWidget1 : TestWidgetBase<Void>

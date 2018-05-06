@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dx.Dashboard.Test
+namespace Dx.Dashboard.Tests
 {
     public abstract class TestWidgetAttribute : WidgetAttribute
     {
