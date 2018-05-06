@@ -51,11 +51,11 @@ namespace Dx.Dashboard.Demo
             AvailableDates = new ReactiveList<DateTime>(Enumerable.Range(0, 5).Select(offset => DateTime.Now.AddDays(-offset)));
             SelectedDate = AvailableDates.First();
 
-            MenuItems.Add(new StaticItemDescriptor(String.Format("{0} - {1}", config.ApplicationName, config.Version)));
+            DashboardMenu.Add(new StaticItemDescriptor(String.Format("{0} - {1}", config.ApplicationName, config.Version)));
 
             _widgetMenu = CreateWidgetMenu();
 
-            MenuItems.Add(_widgetMenu);
+            DashboardMenu.Add(_widgetMenu);
 
             this.WhenAnyValue(vm => vm.CurrentWorkspace)
                 .Where(val => null != val)

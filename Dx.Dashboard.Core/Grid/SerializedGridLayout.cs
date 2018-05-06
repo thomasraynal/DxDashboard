@@ -74,7 +74,6 @@ namespace Dx.Dashboard.Core
 
                 }
 
-
                 return new SerializedGridLayout()
                 {
                     Layout = results.ToList(),

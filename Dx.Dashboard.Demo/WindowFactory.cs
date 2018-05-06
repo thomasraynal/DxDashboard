@@ -2,6 +2,7 @@
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Layout.Core;
 using Dx.Dashboard.Common;
+using Dx.Dashboard.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +46,8 @@ namespace Dx.Dashboard.Demo
         }
         private async Task<TViewModel> HandleCreateWindow<TUserControl, TViewModel>(DXWindow window, bool isModal = false) where TUserControl : UserControl where TViewModel : IViewModel
         {
-            var model = AppCore.Instance.Get<TViewModel>();
-
+            var model = AppCore.Instance.ObjectProvider.GetInstance<TViewModel>();
+ 
             await model.Initialize();
 
             //injaect via DI

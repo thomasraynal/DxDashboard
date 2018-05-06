@@ -19,7 +19,7 @@ namespace Dx.Dashboard.Demo
             set { this.RaiseAndSetIfChanged(ref _workspaceType, value); }
         }
 
-        public DemoWorkspaceViewModel(ICacheStrategy<WorkspaceLayout> cacheStrategy, IDashboard<DemoWorkspaceState> host, bool loadLayout = true) : base(cacheStrategy, host, loadLayout)
+        public DemoWorkspaceViewModel(bool loadLayout = true) : base(loadLayout)
         {
         }
 

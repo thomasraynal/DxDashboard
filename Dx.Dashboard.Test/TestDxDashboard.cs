@@ -1,4 +1,6 @@
-﻿using Dx.Dashboard.Common;
+﻿#define TEST
+
+using Dx.Dashboard.Common;
 using Dx.Dashboard.Core;
 using NUnit.Framework;
 using System;
@@ -15,13 +17,15 @@ using System.Windows.Threading;
 
 namespace Dx.Dashboard.Test
 {
-    //TO DO - reset DI registry
+
     [TestFixture]
     public class TestDxDashboard
     {
+  
 
         private Task<T> StartSTATask<T>(Func<T> func)
         {
+
             var tcs = new TaskCompletionSource<T>();
 
             var currentDispatcher = AppCore.Instance.Get<Dispatcher>();
@@ -121,7 +125,7 @@ namespace Dx.Dashboard.Test
 
                 var testWidget = testDashboard.AvailableWidgets.First();
                 
-                await testDashboard.CreateWidgetCommand.ExecuteIfPossible(testWidget.Name);
+                await testDashboard.CreateNewWidget.ExecuteIfPossible(testWidget.Name);
             
                 Assert.AreEqual(1, testWorkspace.Widgets.Count());
 
@@ -142,7 +146,7 @@ namespace Dx.Dashboard.Test
               var testDashboard = AppCore.Instance.Get<IDashboard<TestWorkspaceState>>();
               var testWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada", "TYPE"), true);
               var testWidget = testDashboard.AvailableWidgets.First();
-              await testDashboard.CreateWidgetCommand.ExecuteIfPossible(testWidget.Name);
+              await testDashboard.CreateNewWidget.ExecuteIfPossible(testWidget.Name);
               var currentLayoutWidgets = testWorkspace.Widgets.Count();
 
               await testWorkspace.SaveLayout.ExecuteIfPossible();
@@ -172,7 +176,7 @@ namespace Dx.Dashboard.Test
                 var testWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada2", "TYPE"), true);
 
                 var testWidget = testDashboard.AvailableWidgets.First();
-                await testDashboard.CreateWidgetCommand.ExecuteIfPossible(testWidget.Name);
+                await testDashboard.CreateNewWidget.ExecuteIfPossible(testWidget.Name);
                 var currentLayoutWidgets = testWorkspace.Widgets.Count();
 
                 await testWorkspace.SaveLayout.ExecuteIfPossible();
@@ -202,15 +206,15 @@ namespace Dx.Dashboard.Test
                 var testDashboard = AppCore.Instance.Get<IDashboard<TestWorkspaceState>>();
                 var testWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada2", "TYPE"), true);
                 var testWidget = testDashboard.AvailableWidgets.First();
-                await testDashboard.CreateWidgetCommand.ExecuteIfPossible(testWidget.Name);
+                await testDashboard.CreateNewWidget.ExecuteIfPossible(testWidget.Name);
                 var currentLayoutWidgets = testWorkspace.Widgets.Count();
 
                 testWorkspace.TaggedLayoutLabel = "TAGGED";
 
                 await testWorkspace.SaveTaggedLayout.ExecuteIfPossible();
+
                 Wait(3);
 
-               
                 var taggedLayout = testDashboard.UserDefinedWorkspaceLayouts.First();
                 var testWorkspace2 = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada3", "TYPE"), true);
                 await testWorkspace2.LoadTaggedLayout.ExecuteIfPossible(taggedLayout);
@@ -231,7 +235,7 @@ namespace Dx.Dashboard.Test
         {
             var testDashboard = AppCore.Instance.Get<IDashboard<TestWorkspaceState>>();
 
-            var menu = testDashboard.MenuItems;
+            var menu = testDashboard.DashboardMenu;
 
             Assert.AreEqual(1, menu.Count());
 

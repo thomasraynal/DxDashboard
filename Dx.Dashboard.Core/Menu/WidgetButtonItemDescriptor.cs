@@ -17,8 +17,6 @@ namespace Dx.Dashboard.Core
             _widget = widget;
         }
 
-        public ReactiveCommand Command { get; set; }
-
         public WidgetAttribute Widget
         {
             get

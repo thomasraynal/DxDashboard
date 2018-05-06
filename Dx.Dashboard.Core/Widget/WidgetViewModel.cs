@@ -109,8 +109,6 @@ namespace Dx.Dashboard.Core
 
         public virtual bool AllowGridSaveLayout { get; protected set; }
 
-        public string ViewModelId { get; private set; }
-
         public WidgetViewModel(TWorkspace host, String cacheId) : base(cacheId)
         {
             _view = new TUserControl();

@@ -34,7 +34,7 @@ namespace Dx.Dashboard.Core
         ReactiveCommand OpenNewWorkspace { get; }
 
         String TaggedLayoutLabel { get; set; }
-        IDashboard<TState> Dashboard { get; set; }
+        IDashboard<TState> Dashboard { get; }
         string Header { get; set; }
 
 

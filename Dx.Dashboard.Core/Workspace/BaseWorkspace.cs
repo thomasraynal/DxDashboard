@@ -71,11 +71,9 @@ namespace Dx.Dashboard.Core
             set { this.RaiseAndSetIfChanged(ref _header, value); }
         }
 
-        private IDashboard<TState> _dashboard;
         public IDashboard<TState> Dashboard
         {
-            get { return _dashboard; }
-            set { this.RaiseAndSetIfChanged(ref _dashboard, value); }
+            get { return AppCore.Instance.Get<IDashboard<TState>>(); }
         }
 
         private TState _state;
@@ -92,13 +90,13 @@ namespace Dx.Dashboard.Core
             set { this.RaiseAndSetIfChanged(ref _widgets, value); }
         }
 
-        private ICacheStrategy<WorkspaceLayout> _cache;
+        private ICacheStrategy<WorkspaceLayout> CacheStrategy =>  AppCore.Instance.Get<ICacheStrategy<WorkspaceLayout>>(); 
 
-        #endregion
+    #endregion
 
-        #region Commands
+    #region Commands
 
-        public ReactiveCommand SaveLayout { get; private set; }
+    public ReactiveCommand SaveLayout { get; private set; }
         public ReactiveCommand SaveTaggedLayout { get; private set; }
         public ReactiveCommand DeleteTaggedLayout { get; private set; }
         public ReactiveCommand SaveTemplateLayout { get; private set; }
@@ -113,14 +111,14 @@ namespace Dx.Dashboard.Core
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Tag;
-            await _cache.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag), layout);
+            await CacheStrategy.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag), layout);
         }
 
         private async Task SaveCurrentLayoutAsDefault()
         {
             var layout = GetCurrentLayout();
             layout.Name = State.Name;
-            await _cache.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name), layout);
+            await CacheStrategy.PersistantCache.Put(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name), layout);
         }
 
         private void SaveCurrentLayoutAsTagged()
@@ -248,14 +246,10 @@ namespace Dx.Dashboard.Core
 
         #endregion
 
-        public BaseWorkspace(ICacheStrategy<WorkspaceLayout> cacheStrategy, IDashboard<TState> host, bool loadLayout = true)
+        public BaseWorkspace(bool loadLayout = true)
         {
 
             _id = Guid.NewGuid();
-
-            _cache = cacheStrategy;
-
-            Dashboard = host;
 
             //This whole code is ugly... but mandatory... Binding With DockManager ItemsSource is lost when restoring the widgets.
             {
@@ -439,12 +433,11 @@ namespace Dx.Dashboard.Core
 
         private async Task<WorkspaceLayout> FindRelevantLayout()
         {
-
-            var layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name)); 
+            var layout = await CacheStrategy.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsKey, State.Name)); 
 
             if (null != layout) return layout;
 
-            layout = await _cache.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag));
+            layout = await CacheStrategy.PersistantCache.Get(String.Format("{0}{1}", DxDashboardConstants.layoutWidgetsTemplateKey, State.Tag));
 
             return layout;
         }
@@ -562,7 +555,7 @@ namespace Dx.Dashboard.Core
             }
         }
 
-        private void RestoreWorspaceLayout(WorkspaceLayout layout)
+        private void RestoreWorkspaceLayout(WorkspaceLayout layout)
         {
             if (null == View) return;
 
@@ -655,7 +648,7 @@ namespace Dx.Dashboard.Core
 
             if (null == layout) return;
 
-             RestoreWorspaceLayout(layout);
+             RestoreWorkspaceLayout(layout);
 
              RestoreGridLayouts(layout.Widgets);
         }
@@ -678,15 +671,11 @@ namespace Dx.Dashboard.Core
 
         private void SetNameOnPanel(LayoutPanel panel)
         {
-            var content = panel.DataContext as IWidget;
-
-            if (content != null)
+            if (panel.DataContext is IWidget content)
             {
                 panel.Name = panel.BindableName = content.ParentName;
             }
         }
-
-
 
         #endregion
 

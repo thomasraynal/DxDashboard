@@ -10,13 +10,14 @@ using Dx.Dashboard.Core;
 using StructureMap.Pipeline;
 using Dx.Dashboard.Common;
 using Dx.Dashboard.Cache;
+using Dx.Dashboard.Core.Extensions;
 
 namespace Dx.Dashboard.Core
 {
     public abstract class BaseDashboard<TState> : ViewModelBase, IDashboard<TState> where TState : class, IWorkspaceState
     {
    
-        public ReactiveCommand CreateWidgetCommand { get; private set; }
+        public ReactiveCommand CreateNewWidget { get; private set; }
 
         public ICacheStrategy<List<WorkspaceLayout>> Cache
         {
@@ -26,11 +27,11 @@ namespace Dx.Dashboard.Core
             }
         }
 
-        public ReactiveList<IMenuItemDescriptor> _menuItems;
-        public ReactiveList<IMenuItemDescriptor> MenuItems
+        public ReactiveList<IMenuItemDescriptor> _dashboardMenu;
+        public ReactiveList<IMenuItemDescriptor> DashboardMenu
         {
-            get { return _menuItems; }
-            set { this.RaiseAndSetIfChanged(ref _menuItems, value); }
+            get { return _dashboardMenu; }
+            set { this.RaiseAndSetIfChanged(ref _dashboardMenu, value); }
         }
 
         public ReactiveList<WorkspaceLayout> _userDefinedWorkspaceLayouts;
@@ -38,13 +39,6 @@ namespace Dx.Dashboard.Core
         {
             get { return _userDefinedWorkspaceLayouts; }
             set { this.RaiseAndSetIfChanged(ref _userDefinedWorkspaceLayouts, value); }
-        }
-
-        public bool _doHideMenus;
-        public bool HideMenus
-        {
-            get { return _doHideMenus; }
-            set { this.RaiseAndSetIfChanged(ref _doHideMenus, value); }
         }
 
         private ReactiveList<IWorkspace<TState>> _workspaces;
@@ -70,12 +64,6 @@ namespace Dx.Dashboard.Core
             }
         }
 
- 
-        #region Commands
-
-
-        #endregion
-
         public async virtual Task<IWidget> CreateWidget(Type widget, String cacheId = null)
         {
             var args = new ExplicitArguments();
@@ -96,24 +84,26 @@ namespace Dx.Dashboard.Core
 
         public BaseDashboard()
         {
-            MenuItems = new ReactiveList<IMenuItemDescriptor>();
+            DashboardMenu = new ReactiveList<IMenuItemDescriptor>();
 
             AvailableWorkspaces = new ReactiveList<IWorkspace<TState>>();
 
             UserDefinedWorkspaceLayouts = new ReactiveList<WorkspaceLayout>(Cache.PersistantCache.Get(DxDashboardConstants.userDefinedLayouts).Result);
 
             _availableWidgets = AppContainer.ObjectProvider.Model.AllInstances
-             .Where(i => i.ReturnedType.GetCustomAttributes(true).Any(attribute => typeof(WidgetAttribute).IsAssignableFrom(attribute.GetType())))
+             .Where(instance => instance.ReturnedType.GetCustomAttributes(true).Any(attribute => typeof(WidgetAttribute).IsAssignableFrom(attribute.GetType())))
              .Select(widget => widget.ReturnedType.GetCustomAttributes(true).Where(attribute => typeof(WidgetAttribute).IsAssignableFrom(attribute.GetType())).First() as WidgetAttribute)
              .Distinct();
+
+            this.WhenAnyObservable(vm => vm.AvailableWorkspaces.ItemsAdded).Subscribe(workspace =>
+             {
+                 CurrentWorkspace = workspace;
+             });
 
             this.WhenAnyObservable(vm => vm.AvailableWorkspaces.ItemsRemoved)
                 .Subscribe(obs =>
                 {
-                    foreach(var widget in obs.Widgets)
-                    {
-                        widget.Dispose();
-                    }
+                    obs.Widgets.ForEach(widget => widget.Dispose());
                 });
 
 
@@ -124,7 +114,7 @@ namespace Dx.Dashboard.Core
                 });
 
 
-            CreateWidgetCommand = ReactiveCommand.Create<String>(async (name) =>
+            CreateNewWidget = ReactiveCommand.Create<String>(async (name) =>
             {
                 var widgets = AvailableWidgets.First(widget => widget.Name == name);
 
@@ -137,12 +127,7 @@ namespace Dx.Dashboard.Core
 
             });
 
-            //AppContainer.ObjectProvider.Configure(conf =>
-            //{
-            //    conf.For<IDashboard<TState>>().Use(this).Singleton();
-            //});
         }
-
 
         protected ListItemDescriptor CreateWidgetMenu(String menuTitle= "Widgets", ImageSource glyph = null)
         {
@@ -153,7 +138,6 @@ namespace Dx.Dashboard.Core
 
             foreach (var item in AvailableWidgets)
             {
-
                 var root = menu;
 
                 foreach (var category in item.Category.Path.Split(';'))
@@ -172,7 +156,7 @@ namespace Dx.Dashboard.Core
                     }
                 }
 
-                root.Items.Add((new WidgetButtonItemDescriptor(item.Name, item, item.Glyph) { Command = CreateWidgetCommand }));
+                root.Items.Add((new WidgetButtonItemDescriptor(item.Name, item, item.Glyph) { Command = CreateNewWidget }));
 
             }
 
@@ -199,8 +183,6 @@ namespace Dx.Dashboard.Core
             await workspace.Initialize(state);
 
             AvailableWorkspaces.Add(workspace);
-
-            CurrentWorkspace = workspace;
 
         }
 

@@ -10,7 +10,7 @@ namespace Dx.Dashboard.Test
 {
     public class TestWorkspace : BaseWorkspace<TestWorkspaceState>
     {
-        public TestWorkspace(ICacheStrategy<WorkspaceLayout> cacheStrategy, IDashboard<TestWorkspaceState> host, bool loadLayout = true) : base(cacheStrategy, host, loadLayout)
+        public TestWorkspace(bool loadLayout = true) : base(loadLayout)
         {
         }
 

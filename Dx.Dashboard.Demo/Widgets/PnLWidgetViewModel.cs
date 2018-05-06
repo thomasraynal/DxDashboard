@@ -87,7 +87,6 @@ namespace Dx.Dashboard.Demo
 
             OpenStrategyWorkspace = ReactiveCommand.Create<StrategyWidgetViewModel>((vm) =>
             {
-                
                 var state = this.Workspace.Dashboard.GetState();
                 this.Workspace.Dashboard.CreateWorkspace(new DemoWorkspaceState(vm.Name, state.Date, DemoWorkspaceType.Strategy)
                 {

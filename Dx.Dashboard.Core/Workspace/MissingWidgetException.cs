@@ -10,7 +10,7 @@ namespace Dx.Dashboard.Core
         {
         }
 
-        public MissingWidgetException(string message) : base(String.Format("Unable to find widget {0}", message))
+        public MissingWidgetException(string message) : base(String.Format($"Unable to find widget {message}"))
         {
         }
 

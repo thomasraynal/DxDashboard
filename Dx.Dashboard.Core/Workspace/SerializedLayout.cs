@@ -28,32 +28,26 @@ namespace Dx.Dashboard.Core
         public SerializedWidget Widget { get; set; }
         public bool IsActive { get; private set; }
 
-        public bool ContainWidget()
-        {
-            return null != Widget;
-        }
-
-        public SerializedLayout FindRecursiveByName(String name)
+        public SerializedLayout FindByName(String name)
         {
             if (Name == name) return this;
 
             foreach (var child in Children)
             {
-                var result = child.FindRecursiveByName(name);
+                var result = child.FindByName(name);
                 if (null != result) return result;
             }
 
             return null;
-
         }
 
-        public static SerializedLayout CreateLayoutTree(IEnumerable<XElement> elements)
+        public static SerializedLayout Create(IEnumerable<XElement> elements)
         {
 
             var main = elements.FirstOrDefault(x => x.Elements().Any(y => y.GetAttribute("name") == "ParentName" && y.Value == string.Empty));
 
-            var name = GetAttributeIfExist(main, "Name");
-            var orientation = GetAttributeIfExist(main, "Orientation");
+            var name = main.GetAttribute("Name");
+            var orientation = main.GetAttribute("Orientation");
 
             if (main == null) return null;
 
@@ -68,30 +62,20 @@ namespace Dx.Dashboard.Core
             Children = GetChildren(elements).ToList();
         }
 
-        private static String GetAttributeIfExist(XElement element, String atttribute)
-        {
-            if (element.Elements().Any(y => y.GetAttribute("name") == atttribute))
-            {
-                return element.Elements().First(y => y.GetAttribute("name") == atttribute).Value;
-            }
-
-            return null;
-        }
-
         private IEnumerable<SerializedLayout> GetChildren(IEnumerable<XElement> elements)
         {
 
             var children = elements.Where(x => x.Elements().Any(y => y.GetAttribute("name") == "ParentName" && y.Value == this.Name));
 
             return children
-                .Select(x =>
+                .Select(child =>
                 {
-                    var width = GetAttributeIfExist(x, "ItemWidth");
-                    var height = GetAttributeIfExist(x, "ItemHeight");
-                    var name = GetAttributeIfExist(x, "Name");
-                    var type = GetAttributeIfExist(x, "TypeName");
-                    var orientation = GetAttributeIfExist(x, "Orientation");
-                    var isActive = GetAttributeIfExist(x, "IsActive");
+                    var width = child.GetAttribute("ItemWidth");
+                    var height = child.GetAttribute("ItemHeight");
+                    var name = child.GetAttribute("Name");
+                    var type = child.GetAttribute("TypeName");
+                    var orientation = child.GetAttribute("Orientation");
+                    var isActive = child.GetAttribute("IsActive");
 
                     var layout = new SerializedLayout(name, orientation, elements)
                     {

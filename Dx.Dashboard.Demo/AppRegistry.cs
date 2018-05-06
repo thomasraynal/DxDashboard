@@ -27,6 +27,8 @@ namespace Dx.Dashboard.Demo
             For<IBlobCache>().Use(() => BlobCache.UserAccount);
 
             For<IDashboard<DemoWorkspaceState>>().Use<DashboardViewModel>().Singleton();
+            Forward<IDashboard<DemoWorkspaceState>, DashboardViewModel>();
+    
             For<IWorkspace<DemoWorkspaceState>>().Use<DemoWorkspaceViewModel>();
             For<IDashboardConfiguration>().Use<DemoConfiguration>().Singleton();
 

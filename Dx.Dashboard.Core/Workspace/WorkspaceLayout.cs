@@ -46,13 +46,13 @@ namespace Dx.Dashboard.Core
 
             var xmlLayout = XElement.Load(file);
             var elements = xmlLayout.XPathSelectElement("//*[@name='Items']").Elements();
-            var serializedLayout = SerializedLayout.CreateLayoutTree(elements);
+            var serializedLayout = SerializedLayout.Create(elements);
 
             if (null != Widgets)
             {
                 foreach (var widget in Widgets)
                 {
-                    var target = serializedLayout.FindRecursiveByName(widget.ParentName);
+                    var target = serializedLayout.FindByName(widget.ParentName);
 
                     //hidden widgets
                     if (null == target) continue;

@@ -12,15 +12,12 @@
              xmlns:local="clr-namespace:Dx.Dashboard.Core">
     <UserControl.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <ResourceDictionary x:Key="itemTemplateDictionnary" Source="/Dx.Dashboard.Core;component/Menu/ItemTemplateDictionnary.xaml" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-            
             <local:MenuItemTemplateSelector x:Key="menuItemTemplateSelector"/>
-
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -35,7 +32,7 @@
         <StackPanel>
             <dxb:ToolBarControl 
                 AllowQuickCustomization="False" 
-                ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.MenuItems, Mode=TwoWay}"  
+                ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.DashboardMenu, Mode=TwoWay}"  
                 AllowCustomizationMenu="False"    
                 Grid.Row="0" 
                 Grid.Column="0" 
