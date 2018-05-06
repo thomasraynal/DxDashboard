@@ -178,6 +178,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AkavacheSqliteLinkerOverride.cs" />
     <Compile Include="Run.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="WindowFactory.cs" />
@@ -227,7 +228,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AkavacheSqliteLinkerOverride.cs" />
     <Compile Include="AppRegistry.cs" />
     <Compile Include="Implem\DemoConfiguration.cs" />
     <Compile Include="Implem\DemoWorkspace.cs" />

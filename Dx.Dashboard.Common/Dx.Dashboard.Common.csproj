@@ -87,7 +87,6 @@
     <Compile Include="Cache\PropertyCacheBase.cs" />
     <Compile Include="Infra\ViewModelBase.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
