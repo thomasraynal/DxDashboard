@@ -70,10 +70,15 @@ namespace Dx.Dashboard.Core
             }
         }
 
+        private String _header;
         public String Header
         {
             get { return PropertyCache.GetOrCreate(Name); }
-            set { PropertyCache.SetOrCreate(value); }
+            set
+            {
+                PropertyCache.SetOrCreate(value);
+                this.RaiseAndSetIfChanged(ref _header, value);
+            }
         }
 
         private String _parentName;
@@ -130,7 +135,7 @@ namespace Dx.Dashboard.Core
             return new WidgetDescriptor()
             {
                 DockId = DockId,
-                ViewModelId = ViewModelId,
+                ViewModelId = ViewModelUniqueId,
                 IsFloating = IsFloating,
                 ParentName = ParentName,
                 Type = GetType().AssemblyQualifiedName,

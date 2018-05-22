@@ -71,7 +71,7 @@ namespace Dx.Dashboard.Cache
             return returnValue;
         }
 
-       public override void SetOrCreate<T>(T value,  [CallerMemberName] string key = null)
+        public override void SetOrCreate<T>(T value, [CallerMemberName] string key = null)
         {
             if (key == null)
             {
@@ -81,7 +81,7 @@ namespace Dx.Dashboard.Cache
             AddToInternalCache(key, value);
 
             // Fire and forget, we retrieve the value from the in-memory cache from now on
-            _blobCache.InsertObject($"{_cacheKey}:{key}", value).Subscribe();
+            _blobCache.InsertObject($"{_cacheKey}:{key}", value).Wait();
 
             _model.RaisePropertyChanged(key);
         }

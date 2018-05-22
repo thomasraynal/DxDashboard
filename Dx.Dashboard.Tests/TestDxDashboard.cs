@@ -253,9 +253,35 @@ namespace Dx.Dashboard.Tests
         }
 
         [Test]
-        public Task ShouldSaveWidgetProperties()
+        public async Task ShouldSaveWidgetProperties()
         {
-            return Task.CompletedTask;
+            await StartSTATask(async () =>
+            {
+                var testDashboard = AppCore.Instance.Get<IDashboard<TestWorkspaceState>>();
+                var testWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada", "TYPE"), true);
+                var testWidget = testDashboard.AvailableWidgets.First();
+                await testDashboard.CreateNewWidget.ExecuteIfPossible(testWidget.Name);
+
+                var widget = testDashboard.CurrentWorkspace.Widgets.First();
+
+                Assert.AreEqual(testWidget.Name, widget.Header);
+
+                var newHeader = "This should be saved";
+                widget.Header = newHeader;
+
+                await testWorkspace.SaveLayout.ExecuteIfPossible();
+
+                testDashboard.AvailableWorkspaces.Clear();
+
+                var newWorkspace = await CreateWorkspace(testDashboard, new TestWorkspaceState("Yadayada", "TYPE"), true);
+
+                Wait(3);
+
+                widget = newWorkspace.Widgets.First();
+
+                Assert.AreEqual(newHeader, widget.Header);
+
+            });
         }
     }
 }

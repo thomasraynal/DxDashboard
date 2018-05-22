@@ -49,7 +49,7 @@ namespace Dx.Dashboard.Demo
             set { this.RaiseAndSetIfChanged(ref _marketValue, value); }
         }
 
-        public StrategyWidgetViewModel(DemoWorkspaceViewModel host, String cacheId= null) : base(host, cacheId)
+        public StrategyWidgetViewModel(DemoWorkspaceViewModel host, String cacheId = null) : base(host, cacheId)
         {
 
             var pricesObservable = PriceService.All

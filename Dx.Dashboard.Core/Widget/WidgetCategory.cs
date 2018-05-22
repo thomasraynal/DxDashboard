@@ -20,5 +20,15 @@ namespace Dx.Dashboard.Core
 
         public String Path => _path;
         public ImageSource Glyph => _glyph;
+
+        public override bool Equals(object obj)
+        {
+            return obj is WidgetCategory && obj.GetHashCode() == this.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return _path.GetHashCode();
+        }
     }
 }

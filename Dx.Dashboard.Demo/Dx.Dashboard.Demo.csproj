@@ -181,6 +181,7 @@
     <Compile Include="AkavacheSqliteLinkerOverride.cs" />
     <Compile Include="Run.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Widgets\StrategyWidgetViewModel.cs" />
     <Compile Include="WindowFactory.cs" />
     <Compile Include="DashboardApp.xaml.cs">
       <DependentUpon>DashboardApp.xaml</DependentUpon>
@@ -220,7 +221,6 @@
     <Compile Include="Widgets\StrategyWidget.xaml.cs">
       <DependentUpon>StrategyWidget.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\StrategyWidgetViewModel.cs" />
     <Compile Include="Widgets\UnboundedWidget.cs" />
     <Compile Include="Widgets\WidgetCategoryProvider.cs" />
     <Compile Include="Widgets\WorkspaceAwareWidgetAttribute.cs" />

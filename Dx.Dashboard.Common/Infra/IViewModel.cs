@@ -11,7 +11,7 @@ namespace Dx.Dashboard.Common
 {
     public interface IViewModel : IDisposable
     {
-        String ViewModelId { get; }
+        String ViewModelUniqueId { get; }
         Window Host { get;  set; }
         IAppContainer AppContainer { get; }
         Task Initialize();

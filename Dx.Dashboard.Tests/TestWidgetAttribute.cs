@@ -20,7 +20,7 @@ namespace Dx.Dashboard.Tests
     {
         public override WidgetCategory Category => TestConstants.TestCategory;
 
-        public TestWidgetOneAttribute() : base("I am Two", null)
+        public TestWidgetOneAttribute() : base("I am One", null)
         {
         }
     }
